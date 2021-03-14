@@ -13,6 +13,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -32,6 +33,7 @@ class MoviesDaoTest {
                 .build()
 
         moviesDao = database.moviesDao()
+
 
     }
 
@@ -66,10 +68,104 @@ class MoviesDaoTest {
 
     }
 
-    @Test fun getMoviesBySearch(){}
+    @Test fun containesBySearch(){
+        runBlockingTest {
 
-    @Test fun getMoviesRecommendaion(){}
+            val names = listOf("Spiderman", "Superman", "Aquaman", "Wonder Woman", "Green light", "Flash")
+            val ids = listOf(100, 200, 300, 400, 500, 600)
+            names.forEachIndexed { index, name ->
+                val random: Int = Random(9).nextInt()
+                val movie = Movie(
+                        true,
+                        "image",
+                        random,
+                        "en",
+                        name,
+                        "Oh no, im superhero xD",
+                        9.0,
+                        "-",
+                        "2007-05-01",
+                        name,
+                        false,
+                        99.0,
+                        1000,
+                        "popular",
+                        ids[index]
+                )
+                moviesDao.insertMovies(movie)
+            }
 
+            val searchedMovie = moviesDao.getMoviesBySearch("uper%")
 
+            assert(searchedMovie.isNotEmpty())
+        }
 
+    }
+
+    @Test fun containesRecommendation(){
+        runBlockingTest {
+
+            val names = listOf("Spiderman", "Superman", "Aquaman", "Wonder Woman", "Green light", "Flash")
+            val ids = listOf(100, 200, 300, 400, 500, 600)
+            names.forEachIndexed { index, name ->
+                val random: Int = Random(9).nextInt()
+                val movie = Movie(
+                        true,
+                        "image",
+                        random,
+                        "en",
+                        name,
+                        "Oh no, im superhero xD",
+                        9.0,
+                        "-",
+                        "2007-05-01",
+                        name,
+                        false,
+                        99.0,
+                        1000,
+                        "popular",
+                        ids[index]
+                )
+                moviesDao.insertMovies(movie)
+            }
+
+            val searchedMovie = moviesDao.getMoviesRecommendaion("popular", 100)
+
+            assert(searchedMovie.isNotEmpty())
+        }
+    }
+
+    @Test fun notContainesRecommendation(){
+
+        runBlockingTest {
+
+            val names = listOf("Spiderman", "Superman", "Aquaman", "Wonder Woman", "Green light", "Flash")
+            val ids = listOf(100, 200, 300, 400, 500, 600)
+            names.forEachIndexed { index, name ->
+                val random: Int = Random(9).nextInt()
+                val movie = Movie(
+                        true,
+                        "image",
+                        random,
+                        "en",
+                        name,
+                        "Oh no, im superhero xD",
+                        9.0,
+                        "-",
+                        "2007-05-01",
+                        name,
+                        false,
+                        99.0,
+                        1000,
+                        "popular",
+                        ids[index]
+                )
+                moviesDao.insertMovies(movie)
+            }
+
+            val searchedMovie = moviesDao.getMoviesRecommendaion("popular", 100)
+
+            assert(searchedMovie.isEmpty())
+        }
+    }
 }

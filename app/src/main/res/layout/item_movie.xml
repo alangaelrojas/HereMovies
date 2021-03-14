@@ -10,12 +10,14 @@
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:layout_margin="2dp"
+        style="@style/ItemCardView"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="?android:attr/selectableItemBackground">
+            style="@style/ItemCardView"
+            >
 
             <ImageView
                 android:id="@+id/cover"

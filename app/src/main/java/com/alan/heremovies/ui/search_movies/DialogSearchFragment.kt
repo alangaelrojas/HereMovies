@@ -69,6 +69,11 @@ class DialogSearchFragment : DialogFragment(), OnClickMovieListener, TextWatcher
         binding.edtSearch.addTextChangedListener(this)
         binding.edtSearch.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                if (binding.edtSearch.text.toString().isEmpty()){
+                    emptyMovies("Not movies yet", false)
+                    return@setOnEditorActionListener false
+                }
+
                 viewModel.getMoviesBySearch(binding.edtSearch.text.toString(), true)
                 loadingMovies()
                 return@setOnEditorActionListener true
